@@ -48,7 +48,7 @@ regla(Respuesta):-
 %R4
 regla(Respuesta):-
     (paso('Comprobar Temporada'), temporada('Temporada Seca') ->
-        !,Respuesta = ['Pregunta', '¿Que tipo de abastecimiento tiene actualmente?' 'Abastecimiento regular', 'Abastecimiento regular y alterno'], 
+        !,Respuesta = ['Pregunta', '¿Que tipo de abastecimiento tiene actualmente?', 'Abastecimiento regular', 'Abastecimiento regular y alterno'], 
         retractall(paso(_)),
         retractall(temporada(_)),
         assertz(paso('Comporbar Fuentes'))
@@ -361,10 +361,11 @@ regla(Respuesta):-
 %R38
 regla(Respuesta):-
     (paso('Comprobar Aspecto'), aspecto('Sedimentacion') ->
-        !,
+        !,Respuesta = ['RESPUESTA', '10 minutos a 0 rpm'],
         retractall(paso(_)),
         retractall(aspecto(_)),
         assertz(paso('Registrar agua_clara'))
+
     ).
 
 %R39
@@ -382,7 +383,7 @@ regla(Respuesta):-
     (paso('Comprobar agua_clara'), agua_clara('si') ->
         !,Respuesta = ['PREGUNTA', '¿Cual es la cantidad de jarras optimas?', 'solo 1', 'mas de 1'],    
         retractall(paso(_)),
-        assertz(paso('Registrar Cantidad_de_jarras_optimas')),
+        assertz(paso('Registrar Cantidad_de_jarras_optimas'))
     ).
 
 %R41
