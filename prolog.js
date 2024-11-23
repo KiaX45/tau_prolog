@@ -1,21 +1,24 @@
 class Prolog {
     static program = `
-:- dynamic(paso/1).
-:- dynamic(temporada/1).
+:- dynamic(paso/1).  % Hacemos que 'paso' sea un predicado dinámico.
+:- dynamic(temporada/1).  % Hacemos que 'temporada' sea un predicado dinámico.
 
 regla(Respuesta):- 
+    % Si hay algún paso, mostramos un mensaje
     (paso(_) -> 
         fail
     ;
+        % Si no hay pasos, asignamos la lista de pasos a Respuesta
         !,ListaPasos = ['PREGUNTA',  'preparacion', 'pruebasPrevias', 'Dosificacion en la planta', 'Analisis posteriores'],
         Respuesta = ListaPasos,
+        %borramos la lista de pasos
         retractall(paso(_)),
         assertz(paso('RegistrarPasoInicial'))
     ).
 
 regla(Respuesta):-
     (paso('RegistrarPasoInicial') ->
-        retractall(paso(_)),
+        retractall(paso(_)),!,
         assertz(paso(Respuesta))
     ).
 
@@ -30,14 +33,22 @@ regla(Respuesta):-
 regla(Respuesta):-
     (paso('RegistrarTemporada') ->
         retractall(paso(_)),
-        assertz(paso(Respuesta))
+        assertz(paso('Comprobar Temporada')),
+        assertz(temporada(Respuesta))
     ).
 
+
+
 regla(Respuesta):-
-    (paso('Temporada lluviosa') ->
+    (paso('Comprobar Temporada'), temporada('Temporada Lluviosa') ->
         Respuesta = ['RESPUESTA', 'Se realiza el analisis de cargas por media hora', 'se realiza la prueba de jarras cada hora'],
-        retractall(paso(_))
+        %es el final del arbol en esta rama por lo que nos devolvemos 
+        retractall(paso(_)),
+        retractall(temporada(_))
     ).
+
+limpiar:-
+    retractall(paso(_)).
     `;
 
     constructor(regla_para_consultar) {
@@ -62,7 +73,7 @@ regla(Respuesta):-
                         success: () => {
                             session.answers(x => {
                                 let respuesta = session.format_answer(x);
-                                if (respuesta) {
+                                if (respuesta && (respuesta.includes("[")) || respuesta.includes("true")) {
                                     resultados.push(respuesta);
                                 }
                             }, {
@@ -96,6 +107,22 @@ regla(Respuesta):-
         });
     }
 }
+
+
+//uso 
+(async () => {
+    const prolog = new Prolog();
+    let resultado = await prolog.consultar("regla(Respuesta).");
+    console.log(resultado);
+    resultado = await prolog.consultar("regla('preparacion').");
+    console.log(resultado);
+    resultado = await prolog.consultar("regla(Respuesta).");
+    console.log(resultado);
+    resultado = await prolog.consultar("regla('Temporada Lluviosa').");
+    console.log(resultado);
+    resultado = await prolog.consultar("regla(Respuesta).");
+    console.log(resultado);
+})();
 
 
 
