@@ -17,12 +17,12 @@ regla(Respuesta):-
 
 regla(Respuesta):-
     (paso('RegistrarPasoInicial') ->
-        retractall(paso(_)),!,
+        !,retractall(paso(_)),!,
         assertz(paso(Respuesta))
     ).
 
 regla(Respuesta):-
-    (paso('preparacion') ->
+    (paso('Preparacion') ->
         !,Respuesta = ['PREGUNTA', '¿En que temporada se encuentra?', 'Temporada Seca', 'Temporada Lluviosa'],
         retractall(paso(_)),
         assertz(paso('RegistrarTemporada'))
@@ -30,7 +30,7 @@ regla(Respuesta):-
 
 regla(Respuesta):-
     (paso('RegistrarTemporada') ->
-        retractall(paso(_)),
+        !,retractall(paso(_)),
         assertz(paso('Comprobar Temporada')),
         assertz(temporada(Respuesta))
     ).
@@ -57,7 +57,7 @@ regla(Respuesta):-
 %R5
 regla(Respuesta):-
     (paso('Comporbar Fuentes') ->
-        retractall(paso(_)),
+        !,retractall(paso(_)),
         assertz(paso('Analizar Fuentes')),
         assertz(fuente(Respuesta))
     ).
@@ -84,7 +84,7 @@ regla(Respuesta):-
 
 regla(Respuesta):-
     (paso('Registrar Estado') ->
-        retractall(paso(_)),
+        !,retractall(paso(_)),
         assertz(paso('Comprobar Estado')),
         assertz(estado(Respuesta))
     ).
@@ -108,7 +108,7 @@ regla(Respuesta):-
 %Pruebas previas
 %R10
 regla(Respuesta):-
-    (paso('pruebasPrevias') ->
+    (paso('Pruebas Previas') ->
         !,Respuesta = ['PREGUNTA', 'Prueba de jarras', 'Analisis de cargas'],
         retractall(paso(_)),
         assertz(paso('RegistrarPrueba'))
@@ -451,7 +451,7 @@ regla(Respuesta):-
 :- dynamic(coloracion/1).
 regla(Respuesta):-
     (paso('Registrar Coloracion') ->
-        retractall(paso(_)),
+        !,retractall(paso(_)),
         assertz(paso('Comprobar Coloracion')),
         assertz(coloracion(Respuesta))
     ).
@@ -486,7 +486,7 @@ regla(Respuesta):-
 :- dynamic(capa/1).
 regla(Respuesta):-
     (paso('Registrar Capa') ->
-        retractall(paso(_)),
+        !,retractall(paso(_)),
         assertz(paso('Comprobar Capa')),
         assertz(capa(Respuesta))
     ).
@@ -504,7 +504,7 @@ regla(Respuesta):-
 :- dynamic(elemento/1).
 regla(Respuesta):-
     (paso('Registrar Elemento') ->
-        retractall(paso(_)),
+        !,retractall(paso(_)),
         assertz(paso('Comprobar Elemento')),
         assertz(elemento(Respuesta))
     ).
@@ -545,7 +545,7 @@ regla(Respuesta):-
 :- dynamic(valor_carga/1).
 regla(Respuesta):-
     (paso('Registrar Valor_Carga') ->
-        retractall(paso(_)),
+        !,retractall(paso(_)),
         assertz(paso('Comprobar Valor_Carga')),
         assertz(valor_carga(Respuesta))
     ).
@@ -567,8 +567,227 @@ regla(Respuesta):-
     ).
 
 %R62
+regla(Respuesta):-
+    (paso('Comprobar Valor_Carga'), valor_carga('Superior a 0') ->
+        !,Respuesta = ['RESPUESTA', 'Elegir dosis intermedia entre la última y penúltima dosis'],
+        retractall(paso(_)),
+        retractall(valor_carga(_))
+    ).  
 
+%------------------------------------------------------------------------------------------------------------
+%3. Dosificacion en la planta
+%R63
+regla(Respuesta):-
+    (paso('Dosificacion en la planta') ->
+        !,Respuesta = ['RESPUESTA', ' Realice medición de caudal', 'Recuerde aplicar la dosis de acuerdo al caudal'],
+        retractall(paso(_)),
+        assertz(paso('Preguntar Electricidad'))
+    ).
 
+%R64
+regla(Respuesta):-
+    (paso('Preguntar Electricidad') ->
+        !,Respuesta = ['PREGUNTA', '¿Hay electricidad?', 'Si', 'No'],
+        retractall(paso(_)),
+        assertz(paso('Registrar Electricidad'))
+    ).
+
+%R65
+:- dynamic(electricidad/1).
+regla(Respuesta):-
+    (paso('Registrar Electricidad') ->
+        !,retractall(paso(_)),
+        assertz(paso('Comprobar Electricidad')),
+        assertz(electricidad(Respuesta))
+    ).
+
+%R66
+regla(Respuesta):-
+    (paso('Comprobar Electricidad'), electricidad('Si') ->
+        !,Respuesta = ['RESPUESTA', 'Ajuste el variador de frecuencia'],
+        retractall(paso(_)),
+        retractall(electricidad(_)),
+        assertz(paso('Preguntar Dosis'))
+    ).
+
+%R67
+%preguntar dosis
+regla(Respuesta):-
+    (paso('Preguntar Dosis') ->
+        !,Respuesta = ['PREGUNTA', '¿Está aplicando la dosis adecuada?', 'si', 'no'],
+        retractall(paso(_)),
+        assertz(paso('Registrar Dosis'))
+    ).
+
+%R68
+:- dynamic(dosis/1).
+regla(Respuesta):-
+    (paso('Registrar Dosis') ->
+        !,retractall(paso(_)),
+        assertz(paso('Comprobar Dosis')),
+        assertz(dosis(Respuesta))
+    ).
+
+%R69
+regla(Respuesta):-
+    (paso('Comprobar Dosis'), dosis('si') ->
+        !,Respuesta = ['RESPUESTA', 'Continúe con la dosis actual'],
+        retractall(paso(_)),
+        retractall(dosis(_))
+    ).
+
+%R70
+regla(Respuesta):-
+    (paso('Comprobar Dosis'), dosis('no') ->
+        !,Respuesta = ['PREGUNTA', '¿Conoce la dosis actual de coagulante que se está dosificando?', 'si', 'no'],
+        retractall(paso(_)),
+        retractall(dosis(_)),
+        assertz(paso('Registrar DosisActual'))
+    ).
+
+%R71
+:- dynamic(dosis_actual/1).
+regla(Respuesta):-
+    (paso('Registrar DosisActual') ->
+        !,retractall(paso(_)),
+        assertz(paso('Comprobar DosisActual')),
+        assertz(dosis_actual(Respuesta))
+    ).
+
+%R72
+regla(Respuesta):-
+    (paso('Comprobar DosisActual'), dosis_actual('si') ->
+        !,Respuesta = ['RESPUESTA', 'Ajuste el variador de frecuencia'],
+        retractall(paso(_)),
+        retractall(dosis_actual(_))
+    ).
+
+%R73
+regla(Respuesta):-
+    (paso('Comprobar DosisActual'), dosis_actual('no') ->
+        !,Respuesta = ['RESPUESTA', 'Realice un aforo', 'Ajuste el variador de frecuencia según resultado del aforo'],
+        retractall(paso(_)),
+        retractall(dosis_actual(_))
+    ).
+
+%R74
+regla(Respuesta):-
+    (paso('Comprobar Electricidad'), electricidad('No') ->
+        !,Respuesta = ['RESPUESTA', 'Prepare material para aforo', 'Abra la válvula', 'Realice aforo'],
+        retractall(paso(_)),
+        retractall(electricidad(_)),
+        assertz(paso('Preguntar DosisOptima'))
+    ).
+
+%R75
+regla(Respuesta):-
+    (paso('Preguntar DosisOptima') ->
+        !,Respuesta = ['PREGUNTA', '¿Está aplicando la dosis óptima?', 'si', 'no'],
+        retractall(paso(_)),
+        assertz(paso('Registrar DosisOptima'))
+    ).
+
+%R76
+:- dynamic(dosis_optima/1).
+regla(Respuesta):-
+    (paso('Registrar DosisOptima') ->
+        !,retractall(paso(_)),
+        assertz(paso('Comprobar DosisOptima')),
+        assertz(dosis_optima(Respuesta))
+    ).
+
+%R77
+regla(Respuesta):-
+    (paso('Comprobar DosisOptima'), dosis_optima('si') ->
+        !,Respuesta = ['RESPUESTA', 'Continúe con la dosis actual'],
+        retractall(paso(_)),
+        retractall(dosis_optima(_))
+    ).
+
+%R78
+regla(Respuesta):-
+    (paso('Comprobar DosisOptima'), dosis_optima('no') ->
+        !,Respuesta = ['RESPUESTA', 'Ajustar la válvula', 'Realizar aforo', 'Repetir proceso hasta encontrar dosis óptima'],
+        retractall(paso(_)),
+        retractall(dosis_optima(_))
+    ).
+
+%------------------------------------------------------------------------------------------------
+%4. Analisis posteriores
+
+%R79
+regla(Respuesta):-
+    (paso('Analisis posteriores') ->
+        !,Respuesta = ['RESPUESTA', 'Revisar sección de floculadores'],
+        retractall(paso(_)),
+        assertz(paso('Preguntar ColoracionFloculadores'))
+    ).
+
+%R80
+regla(Respuesta):-
+    (paso('Preguntar ColoracionFloculadores') ->
+        !,Respuesta = ['PREGUNTA', '¿Observa color en el agua en la sección de floculadores?', 'Color Rojizo', 'Color Plateado',  'Sin color aparente'],
+        retractall(paso(_)),
+        assertz(paso('Registrar ColoracionFloculadores'))
+    ).
+
+%R81
+:- dynamic(coloracion_floculadores/1).
+regla(Respuesta):-
+    (paso('Registrar ColoracionFloculadores') ->
+        !,retractall(paso(_)),
+        assertz(paso('Comprobar ColoracionFloculadores')),
+        assertz(coloracion_floculadores(Respuesta))
+    ).
+
+%R82
+regla(Respuesta):-
+    (paso('Comprobar ColoracionFloculadores'), coloracion_floculadores('Color Rojizo') ->
+        !,Respuesta = ['RESPUESTA', 'Necesita más coagulante'],
+        retractall(paso(_)),
+        retractall(coloracion_floculadores(_))
+    ).
+
+%R83
+regla(Respuesta):-
+    (paso('Comprobar ColoracionFloculadores'), coloracion_floculadores('Color Plateado') ->
+        !,Respuesta = ['RESPUESTA', 'Necesita menos coagulante'],
+        retractall(paso(_)),
+        retractall(coloracion_floculadores(_))
+    ).
+
+%R84
+regla(Respuesta):-
+    (paso('Comprobar ColoracionFloculadores'), coloracion_floculadores('Sin color aparente') ->
+        !,Respuesta = ['RESPUESTA', 'Continúe con la dosis actual'],
+        retractall(paso(_)),
+        retractall(coloracion_floculadores(_))
+    ).
 
 limpiar:-
-    retractall(paso(_)).
+    retractall(paso(_)),
+    retractall(temporada(_)),
+    retractall(fuente(_)),
+    retractall(estado(_)),
+    retractall(prueba(_)),
+    retractall(fase(_)),
+    retractall(aspecto(_)),
+    retractall(dosificacion(_)),
+    retractall(dosificador(_)),
+    retractall(cantidad_de_jarras(_)),
+    retractall(formacion_de_floc(_)),
+    retractall(aumento_turbiedad(_)),
+    retractall(agua_clara(_)),
+    retractall(cantidad_de_jarras_optimas(_)),
+    retractall(color_jarras(_)),
+    retractall(coloracion(_)),
+    retractall(capa(_)),
+    retractall(elemento(_)),
+    retractall(valor_carga(_)),
+    retractall(electricidad(_)),
+    retractall(dosis(_)),
+    retractall(dosis_actual(_)),
+    retractall(dosis_optima(_)),
+    retractall(coloracion_floculadores(_)).
+
+
