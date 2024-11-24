@@ -48,7 +48,7 @@ regla(Respuesta):-
 %R4
 regla(Respuesta):-
     (paso('Comprobar Temporada'), temporada('Temporada Seca') ->
-        !,Respuesta = ['Pregunta', '¿Que tipo de abastecimiento tiene actualmente?', 'Abastecimiento regular', 'Abastecimiento regular y alterno'], 
+        !,Respuesta = ['PREGUNTA', '¿Que tipo de abastecimiento tiene actualmente?', 'Abastecimiento regular', 'Abastecimiento regular y alterno'], 
         retractall(paso(_)),
         retractall(temporada(_)),
         assertz(paso('Comporbar Fuentes'))
@@ -144,7 +144,7 @@ regla(Respuesta):-
 %R14
 regla(Respuesta):-
     (paso('Comprobar Fase'), fase('Dosis de coagulante') ->
-        !,Respuesta = ['PREGUNTAR', 'Medio de dosificacion', 'Tipo de dosificador', 'Cantidad de jarras'],
+        !,Respuesta = ['PREGUNTA', 'Medio de dosificacion', 'Tipo de dosificador', 'Cantidad de jarras'],
         retractall(paso(_)),
         retractall(fase(_)),
         assertz(paso('Registrar Aspecto'))
