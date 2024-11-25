@@ -109,7 +109,7 @@ regla(Respuesta):-
 %R10
 regla(Respuesta):-
     (paso('Pruebas Previas') ->
-        !,Respuesta = ['PREGUNTA', 'Prueba de jarras', 'Analisis de cargas'],
+        !,Respuesta = ['PREGUNTA', 'Seleccione el procedimiento deseado','Prueba de jarras', 'Analisis de cargas'],
         retractall(paso(_)),
         assertz(paso('RegistrarPrueba'))
     ).
@@ -126,7 +126,7 @@ regla(Respuesta):-
 %R12
 regla(Respuesta):-
     (paso('Comprobar Prueba'), prueba('Prueba de jarras') ->
-        !,Respuesta = ['PREGUNTA', 'Dosis de coagulante', 'Operacion de la maquina'],
+        !,Respuesta = ['PREGUNTA', 'Seleccione el procedimiento deseado', 'Dosis de coagulante', 'Operacion de la maquina'],
         retractall(paso(_)),
         retractall(prueba(_)),
         assertz(paso('RegistrarFase'))
@@ -144,7 +144,7 @@ regla(Respuesta):-
 %R14
 regla(Respuesta):-
     (paso('Comprobar Fase'), fase('Dosis de coagulante') ->
-        !,Respuesta = ['PREGUNTA', 'Medio de dosificacion', 'Tipo de dosificador', 'Cantidad de jarras'],
+        !,Respuesta = ['PREGUNTA',  'Seleccione el procedimiento deseado','Medio de dosificacion', 'Tipo de dosificador', 'Cantidad de jarras'],
         retractall(paso(_)),
         retractall(fase(_)),
         assertz(paso('Registrar Aspecto'))
@@ -154,7 +154,7 @@ regla(Respuesta):-
 :- dynamic(aspecto/1).
 regla(Respuesta):-
     (paso('Registrar Aspecto') ->
-        retractall(paso(_)),
+        !,retractall(paso(_)),
         assertz(paso('Comprobar Aspecto')),
         assertz(aspecto(Respuesta))
     ).
@@ -172,7 +172,7 @@ regla(Respuesta):-
 :- dynamic(dosificacion/1).
 regla(Respuesta):-
     (paso('Registrar Dosificacion') ->
-        retractall(paso(_)),
+        !,retractall(paso(_)),
         assertz(paso('Comprobar Dosificacion')),
         assertz(dosificacion(Respuesta))
     ).
@@ -206,7 +206,7 @@ regla(Respuesta):-
 :- dynamic(dosificador/1).
 regla(Respuesta):-
     (paso('Registrar Dosificador') ->
-        retractall(paso(_)),
+        !,retractall(paso(_)),
         assertz(paso('Comprobar Dosificador')),
         assertz(dosificador(Respuesta))
     ).
