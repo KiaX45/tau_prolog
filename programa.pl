@@ -21,9 +21,10 @@ regla(Respuesta):-
         assertz(paso(Respuesta))
     ).
 
+%R1
 regla(Respuesta):-
     (paso('Preparacion') ->
-        !,Respuesta = ['PREGUNTA', '¿En que temporada se encuentra?', 'Temporada Seca', 'Temporada Lluviosa'],
+        !,Respuesta = ['PREGUNTA', '¿En que temporada se encuentra?', 'Temporada Seca', 'Soleado sin lluvia', 'Temporada Lluviosa', 'Lluvioso'],
         retractall(paso(_)),
         assertz(paso('RegistrarTemporada'))
     ).
@@ -48,7 +49,7 @@ regla(Respuesta):-
 %R4
 regla(Respuesta):-
     (paso('Comprobar Temporada'), temporada('Temporada Seca') ->
-        !,Respuesta = ['PREGUNTA', '¿Que tipo de abastecimiento tiene actualmente?', 'Abastecimiento regular', 'Abastecimiento regular y alterno'], 
+        !,Respuesta = ['PREGUNTA', '¿Que tipo de abastecimiento tiene actualmente?', 'Abastecimiento regular', 'El agua proviene del Río Pasto y de la Quebrada Lope', 'Abastecimiento regular y alterno', 'El agua proviene de Río Bobo y de la Quebrada Piedras'], 
         retractall(paso(_)),
         retractall(temporada(_)),
         assertz(paso('Comporbar Fuentes'))
@@ -73,7 +74,8 @@ regla(Respuesta):-
 %R7
 regla(Respuesta):-
     (paso('Analizar Fuentes'), fuente('Abastecimiento regular') ->
-        !,Respuesta = ['PREGUNTA', 'selccione la opcion correspondiente','La turbiedad es menor a 10 y el color aparente es menor a 100', 'La turbiedad es mayor igual a 10 y el color aparente es mayor igual a 100'],
+        !,Respuesta = ['PREGUNTA', 'selccione la opcion correspondiente','La turbiedad es menor a 10 y el color aparente es menor a 100', 'La turbiedad es mayor igual a 10 y el color aparente es mayor igual a 100', 'EXPLICAR', 'La turbiedad es la medida de la cantidad de particulas que impiden el paso de luz a través del agua, haciendo que a mayor turbiedad, el agua se vea más sucia.
+                       El color aparente es el resultado de las sustancias suspendidas y disueltas en el agua, a mayor grado, es más visible.'],
         retractall(paso(_)),
         retractall(fuente(_)),
         assertz(paso('Registrar Estado'))
@@ -109,7 +111,7 @@ regla(Respuesta):-
 %R10
 regla(Respuesta):-
     (paso('Pruebas Previas') ->
-        !,Respuesta = ['PREGUNTA', 'Seleccione el procedimiento deseado','Prueba de jarras', 'Analisis de cargas'],
+        !,Respuesta = ['PREGUNTA', 'Seleccione el procedimiento deseado','Prueba de jarras', 'Ensayo de laboratorio que simula coagulación, floculación y sedimentación, para determinar dosis de coagulante.', 'Analisis de cargas', 'Ensayo de laboratorio que permite determinar dosis de coagulante a partir de la neutralización de cargas eléctricas del agua.'],
         retractall(paso(_)),
         assertz(paso('RegistrarPrueba'))
     ).
@@ -126,7 +128,7 @@ regla(Respuesta):-
 %R12
 regla(Respuesta):-
     (paso('Comprobar Prueba'), prueba('Prueba de jarras') ->
-        !,Respuesta = ['PREGUNTA', 'Seleccione el procedimiento deseado', 'Dosis de coagulante', 'Operacion de la maquina'],
+        !,Respuesta = ['PREGUNTA', 'Seleccione el procedimiento deseado', 'Dosis de coagulante', 'Referente a las dosis de coagulante seleccionadas para colocar en cada una de las jarras de la prueba.', 'Operacion de la maquina', 'Referente a los procesos de coagulación, floculación y sedimentación que son simulados en la prueba de jarras.'],
         retractall(paso(_)),
         retractall(prueba(_)),
         assertz(paso('RegistrarFase'))
@@ -144,7 +146,7 @@ regla(Respuesta):-
 %R14
 regla(Respuesta):-
     (paso('Comprobar Fase'), fase('Dosis de coagulante') ->
-        !,Respuesta = ['PREGUNTA',  'Seleccione el procedimiento deseado','Medio de dosificacion', 'Tipo de dosificador', 'Cantidad de jarras'],
+        !,Respuesta = ['PREGUNTA',  'Seleccione el procedimiento deseado','Medio de dosificacion', 'De qué forma se dosifica el coagulante en las jarras', 'Tipo de dosificador', 'Debe definirse el instrumento con el cual se dosifica las cantidades de coagulante correspondientes.', 'Dosis a probar', 'Rango de dosis a probar en las jarras.'],
         retractall(paso(_)),
         retractall(fase(_)),
         assertz(paso('Registrar Aspecto'))
@@ -162,7 +164,7 @@ regla(Respuesta):-
 %R16
 regla(Respuesta):-
     (paso('Comprobar Aspecto'), aspecto('Medio de dosificacion') ->
-        !,Respuesta = ['PREGUNTA', '¿Que tipo de dosificacion se esta usando?','Dosificacion directa', 'Dosificacion indirecta'],
+        !,Respuesta = ['PREGUNTA', '¿Que tipo de dosificacion se esta usando?','Dosificacion directa', 'Dosificación en jarras.', 'Dosificacion indirecta', 'Dosificación en algún medio externo para luego ser llevada la sustancia a las jarras.'],
         retractall(paso(_)),
         retractall(aspecto(_)),
         assertz(paso('Registrar Dosificacion'))
@@ -199,7 +201,7 @@ regla(Respuesta):-
         retractall(paso(_)),
         retractall(aspecto(_)),
         assertz(paso('Registrar Dosificador')),
-        !,Respuesta = ['PREGUNTA', '¿Que tipo de dosificador se esta usando?', 'Micropipeteador', 'Jeringa']
+        !,Respuesta = ['PREGUNTA', '¿Que tipo de dosificador se esta usando?', 'Micropipeteador', ' Dosificador electrónico automático que facilita la transferencia de muestras líquidas.', 'Jeringa', ' En caso de no contar con dosificador automático, puede usar jeringas para ello.']
     ).
 
 %R21
@@ -229,7 +231,7 @@ regla(Respuesta):-
 
 %R24
 regla(Respuesta):-
-    (paso('Comprobar Aspecto'), aspecto('Cantidad de jarras') ->
+    (paso('Comprobar Aspecto'), aspecto('Dosis a probar') ->
         !,Respuesta = ['RESPUESTA', 'Desde 20 hata 130 mg/L'],
         retractall(paso(_)),
         retractall(aspecto(_))
@@ -239,7 +241,7 @@ regla(Respuesta):-
 
 regla(Respuesta):-
     (paso('Comprobar Fase'), fase('Operacion de la maquina') ->
-        !,Respuesta = ['PREGUNTA', '¿Que tipo de operacion se esta realizando?', 'Coagulacion', 'Floculacion', 'Sedimentacion'],
+        !,Respuesta = ['PREGUNTA', '¿Que tipo de operacion se esta realizando?', 'Coagulacion', ' En prueba de jarras, coagulación hace referencia a la primera etapa de esta prueba, cuando el coagulante es mezclado con el agua.', 'Floculacion', ' En prueba de jarras, floculación hace referencia a la segunda etapa de esta prueba, cuando las paletas comienzan a girar a velocidades bajas para lograr la formación de floc.', 'Sedimentacion', ' En prueba de jarras, sedimentación hace referencia a la última etapa de esta prueba, cuando una vez formado el floc, se deja las jarras en reposo para que este caiga al fondo de cada contenedor.'],
         retractall(paso(_)),
         assertz(paso('Registrar Aspecto'))
     ).
@@ -268,7 +270,7 @@ regla(Respuesta):-
 %R28.1
 regla(Respuesta):-
     (paso('Preguntar Formacion_de_floc') ->
-        !,Respuesta = ['PREGUNTA', '¿Observa formacion de floc?', 'si', 'no'],
+        !,Respuesta = ['PREGUNTA', '¿Observa formacion de floc?', 'si', 'no', 'EXPLICAR',  'La unión de partículas microscópicas debido a la coagulación, permite que estas se vuelvan visibles al estar juntas, eso se conoce como floc.'],
         retractall(paso(_)),
         assertz(paso('Registrar Formacion_de_floc'))
     ).
@@ -285,7 +287,7 @@ regla(Respuesta):-
 %R30
 regla(Respuesta):-
     (paso('Comprobar Formacion_de_floc'), formacion_de_floc('si') ->
-        !,Respuesta = ['PREGUNTA', '¿Cuantas jarras optimas observa?', 'solo 1', 'mas de 1'],
+        !,Respuesta = ['PREGUNTA', '¿Cuantas jarras optimas observa?', 'solo 1', 'mas de 1', 'EXPLICAR', 'Hace referencia a aquellas donde puede observarse con mucho detalle la formación de floc.'],
         retractall(paso(_)),
         retractall(formacion_de_floc(_)),
         assertz(paso('Registrar Cantidad_de_jarras'))
@@ -319,7 +321,7 @@ regla(Respuesta):-
 %R33
 regla(Respuesta):-
     (paso('Comprobar Formacion_de_floc'), formacion_de_floc('no') ->
-        !,Respuesta = ['PREGUNTA', '¿Exite un aumento en la turbiedad?', 'Primeras Jarras', 'Ultimas Jarras', 'Ninguna'],
+        !,Respuesta = ['PREGUNTA', '¿Exite un aumento en la turbiedad?', 'Primeras Jarras', 'Ultimas Jarras', 'Ninguna', 'EXPLICAR', ' Medida de la cantidad de particulas que impiden el paso de luz a través del agua, haciendo que a mayor turbiedad, el agua se vea más sucia.'],
         retractall(paso(_)),
         retractall(formacion_de_floc(_)),
         assertz(paso('Registrar aumento_turbiedad'))
@@ -372,7 +374,7 @@ regla(Respuesta):-
 :- dynamic(agua_clara/1).
 regla(Respuesta):-
     (paso('Registrar agua_clara') ->
-        !,Respuesta = ['PREGUNTA', '¿El agua es mas clara?', 'si', 'no'],
+        !,Respuesta = ['PREGUNTA', '¿El agua es mas clara?', 'si', 'no', 'EXPLICAR', 'Agua más transparente, con turbiedad y color muy bajos.'],
         retractall(paso(_)),
         assertz(paso('Comprobar agua_clara')),
         assertz(agua_clara(Respuesta))
@@ -415,7 +417,7 @@ regla(Respuesta):-
 %Agua no clara
 regla(Respuesta):-
     (paso('Comprobar agua_clara'), agua_clara('no') ->
-        !,Respuesta = ['PREGUNTA', '¿Observa color en alguna de las jarras?', 'si', 'no'],
+        !,Respuesta = ['PREGUNTA', '¿Observa color en alguna de las jarras?', 'si', 'no', 'EXPLICAR', ' Si observa que el agua tiene algún tinte en lugar de verse transparente, entonces es porque hay presencia de color.'],
         retractall(paso(_)),
         retractall(agua_clara(_)),
         assertz(paso('Registrar Color_Jarras'))  
@@ -441,7 +443,7 @@ regla(Respuesta):-
 %R47
 regla(Respuesta):-
     (paso('Comprobar Color_Jarras'), color_jarras('si') ->
-        !,Respuesta = ['PREGUNTA', '¿Cual es el color del agua?', 'Rojizo', 'Plateado'],
+        !,Respuesta = ['PREGUNTA', '¿Cual es el color del agua?', 'Rojizo', 'Plateado', 'EXPLICAR', ' Hace referencia al color que puede detectarse a simple vista en el agua.'],
         retractall(paso(_)),
         retractall(color_jarras(_)),
         assertz(paso('Registrar Coloracion'))
@@ -476,7 +478,7 @@ regla(Respuesta):-
 %comprobar tipo de prueba prueba analisis de cargas
 regla(Respuesta):-
     (paso('Comprobar Prueba'), prueba('Analisis de cargas') ->
-        !,Respuesta = ['PREGUNTA', 'Seleccione el tipo de analisis', 'Tipo de dosificador', 'Operacion de la maquina'],
+        !,Respuesta = ['PREGUNTA', 'Seleccione el tipo de analisis', 'Tipo de dosificador', ' Debe definirse el instrumento con el cual se dosifica las cantidades de coagulante correspondientes.', 'Operacion de la maquina', 'Referente al proceso de mezcla de coagulante con verificación de cargas.'],
         retractall(paso(_)),
         retractall(prueba(_)),
         assertz(paso('Registrar Capa'))
@@ -494,7 +496,7 @@ regla(Respuesta):-
 %R53
 regla(Respuesta):-
     (paso('Comprobar Capa'), capa('Tipo de dosificador') ->
-        !,Respuesta = ['PREGUNTA', '¿Que tipo de dosificador se esta usando?', 'Micropipeteador', 'Jeringa'],
+        !,Respuesta = ['PREGUNTA', '¿Que tipo de dosificador se esta usando?', 'Micropipeteador', ' Dosificador electrónico automático que facilita la transferencia de muestras líquidas.', 'Jeringa', 'En caso de no contar con dosificador automático, puede usar jeringas para ello.'],
         retractall(paso(_)),
         retractall(capa(_)),
         assertz(paso('Registrar Elemento'))
@@ -536,7 +538,7 @@ regla(Respuesta):-
 %R58
 regla(Respuesta):-
     (paso('Preguntar Valor_Carga') ->
-        !,Respuesta = ['PREGUNTA', '¿El valor de carga llega al 0?', 'No', 'Si', 'Superior a 0'],
+        !,Respuesta = ['PREGUNTA', '¿El valor de carga llega al 0?', 'No', 'Si', 'Superior a 0', 'EXPLICAR', 'El analizador de cargas cuenta con una pantalla donde se presenta un número que puede ser positivo, negativo o cero, a medida que se agrega el coagulante dicho número va cambiando, al dosificar debe buscarse que dicho valor llegue a cero.'],
         retractall(paso(_)),
         assertz(paso('Registrar Valor_Carga'))
     ).
@@ -587,7 +589,7 @@ regla(Respuesta):-
 %R64
 regla(Respuesta):-
     (paso('Preguntar Electricidad') ->
-        !,Respuesta = ['PREGUNTA', '¿Hay electricidad?', 'Si', 'No'],
+        !,Respuesta = ['PREGUNTA', '¿Hay electricidad?', 'Si', 'No', 'EXPLICAR', ' Si hay luz, o se encuentra activa la planta de energía.'],
         retractall(paso(_)),
         assertz(paso('Registrar Electricidad'))
     ).
@@ -726,7 +728,7 @@ regla(Respuesta):-
 %R80
 regla(Respuesta):-
     (paso('Preguntar ColoracionFloculadores') ->
-        !,Respuesta = ['PREGUNTA', '¿Observa color en el agua en la sección de floculadores?', 'Color Rojizo', 'Color Plateado',  'Sin color aparente'],
+        !,Respuesta = ['PREGUNTA', '¿Observa color en el agua en la sección de floculadores?', 'Color Rojizo', 'Color Plateado',  'Sin color aparente', 'EXPLICAR', ' Hace referencia al color que puede detectarse a simple vista en el agua.'],
         retractall(paso(_)),
         assertz(paso('Registrar ColoracionFloculadores'))
     ).
@@ -789,5 +791,3 @@ limpiar:-
     retractall(dosis_actual(_)),
     retractall(dosis_optima(_)),
     retractall(coloracion_floculadores(_)).
-
-
