@@ -8,7 +8,10 @@ regla(Respuesta):-
         fail
     ;
         % Si no hay pasos, asignamos la lista de pasos a Respuesta
-        !,ListaPasos = ['PREGUNTA', 'Seleccione el procedimiento deseado', 'Preparacion', 'Pruebas Previas', 'Dosificacion en la planta', 'Analisis posteriores'],
+        !,ListaPasos = ['PREGUNTA', 'Seleccione el procedimiento deseado', 'Preparacion', 'Preparación: Referente a las pruebas previas que deben realizarse según el clima o temporada para determinar la dosis óptima de coagulante necesaria en la planta Centenario.',
+        'Pruebas Previas', 'Pruebas Previas: Contiene información acerca de los tipos de pruebas que se manejan en la planta Centenario para determinar la dosis necesaria de coagulante.',
+        'Dosificacion en la planta', 'Dosificación en planta: Consiste en los procesos disponibles para realizar la dosificación de coagulante al agua que está siendo tratada en la planta Centenario| dependiendo de si se cuenta con electricidad o no en el momento.',
+        'Analisis posteriores', 'Análisis posteriores: Referente a las pruebas que se pueden realizar para verificar que la dosis de coagulante aplicada al agua a tratar sea adecuada.'],
         Respuesta = ListaPasos,
         %borramos la lista de pasos
         retractall(paso(_)),
@@ -111,7 +114,7 @@ regla(Respuesta):-
 %R10
 regla(Respuesta):-
     (paso('Pruebas Previas') ->
-        !,Respuesta = ['PREGUNTA', 'Seleccione el procedimiento deseado','Prueba de jarras', 'Ensayo de laboratorio que simula coagulación, floculación y sedimentación, para determinar dosis de coagulante.', 'Analisis de cargas', 'Ensayo de laboratorio que permite determinar dosis de coagulante a partir de la neutralización de cargas eléctricas del agua.'],
+        !,Respuesta = ['PREGUNTA', 'Seleccione el procedimiento deseado','Prueba de jarras', 'Ensayo de laboratorio que simula coagulación| floculación y sedimentación| para determinar dosis de coagulante.', 'Analisis de cargas', 'Ensayo de laboratorio que permite determinar dosis de coagulante a partir de la neutralización de cargas eléctricas del agua.'],
         retractall(paso(_)),
         assertz(paso('RegistrarPrueba'))
     ).
@@ -128,7 +131,7 @@ regla(Respuesta):-
 %R12
 regla(Respuesta):-
     (paso('Comprobar Prueba'), prueba('Prueba de jarras') ->
-        !,Respuesta = ['PREGUNTA', 'Seleccione el procedimiento deseado', 'Dosis de coagulante', 'Referente a las dosis de coagulante seleccionadas para colocar en cada una de las jarras de la prueba.', 'Operacion de la maquina', 'Referente a los procesos de coagulación, floculación y sedimentación que son simulados en la prueba de jarras.'],
+        !,Respuesta = ['PREGUNTA', 'Seleccione el procedimiento deseado', 'Dosis de coagulante', 'Referente a las dosis de coagulante seleccionadas para colocar en cada una de las jarras de la prueba.', 'Operacion de la maquina', 'Referente a los procesos de coagulación| floculación y sedimentación que son simulados en la prueba de jarras.'],
         retractall(paso(_)),
         retractall(prueba(_)),
         assertz(paso('RegistrarFase'))
@@ -201,7 +204,7 @@ regla(Respuesta):-
         retractall(paso(_)),
         retractall(aspecto(_)),
         assertz(paso('Registrar Dosificador')),
-        !,Respuesta = ['PREGUNTA', '¿Que tipo de dosificador se esta usando?', 'Micropipeteador', ' Dosificador electrónico automático que facilita la transferencia de muestras líquidas.', 'Jeringa', ' En caso de no contar con dosificador automático, puede usar jeringas para ello.']
+        !,Respuesta = ['PREGUNTA', '¿Que tipo de dosificador se esta usando?', 'Micropipeteador', ' Dosificador electrónico automático que facilita la transferencia de muestras líquidas.', 'Jeringa', ' En caso de no contar con dosificador automático| puede usar jeringas para ello.']
     ).
 
 %R21
@@ -241,7 +244,7 @@ regla(Respuesta):-
 
 regla(Respuesta):-
     (paso('Comprobar Fase'), fase('Operacion de la maquina') ->
-        !,Respuesta = ['PREGUNTA', '¿Que tipo de operacion se esta realizando?', 'Coagulacion', ' En prueba de jarras, coagulación hace referencia a la primera etapa de esta prueba, cuando el coagulante es mezclado con el agua.', 'Floculacion', ' En prueba de jarras, floculación hace referencia a la segunda etapa de esta prueba, cuando las paletas comienzan a girar a velocidades bajas para lograr la formación de floc.', 'Sedimentacion', ' En prueba de jarras, sedimentación hace referencia a la última etapa de esta prueba, cuando una vez formado el floc, se deja las jarras en reposo para que este caiga al fondo de cada contenedor.'],
+        !,Respuesta = ['PREGUNTA', '¿Que tipo de operacion se esta realizando?', 'Coagulacion', ' En prueba de jarras| coagulación hace referencia a la primera etapa de esta prueba| cuando el coagulante es mezclado con el agua.', 'Floculacion', ' En prueba de jarras| floculación hace referencia a la segunda etapa de esta prueba| cuando las paletas comienzan a girar a velocidades bajas para lograr la formación de floc.', 'Sedimentacion', ' En prueba de jarras| sedimentación hace referencia a la última etapa de esta prueba| cuando una vez formado el floc| se deja las jarras en reposo para que este caiga al fondo de cada contenedor.'],
         retractall(paso(_)),
         assertz(paso('Registrar Aspecto'))
     ).
@@ -383,7 +386,7 @@ regla(Respuesta):-
 %R40
 regla(Respuesta):-
     (paso('Comprobar agua_clara'), agua_clara('si') ->
-        !,Respuesta = ['PREGUNTA', '¿Cual es la cantidad de jarras optimas?', 'solo 1', 'mas de 1'],    
+        !,Respuesta = ['PREGUNTA', '¿Cual es la cantidad de jarras optimas?', 'solo 1', 'mas de 1', 'EXPLICAR', 'Jarras óptimas son aquellas jarras donde el agua es más clara'],    
         retractall(paso(_)),
         assertz(paso('Registrar Cantidad_de_jarras_optimas'))
     ).
@@ -496,7 +499,7 @@ regla(Respuesta):-
 %R53
 regla(Respuesta):-
     (paso('Comprobar Capa'), capa('Tipo de dosificador') ->
-        !,Respuesta = ['PREGUNTA', '¿Que tipo de dosificador se esta usando?', 'Micropipeteador', ' Dosificador electrónico automático que facilita la transferencia de muestras líquidas.', 'Jeringa', 'En caso de no contar con dosificador automático, puede usar jeringas para ello.'],
+        !,Respuesta = ['PREGUNTA', '¿Que tipo de dosificador se esta usando?', 'Micropipeteador', ' Dosificador electrónico automático que facilita la transferencia de muestras líquidas.', 'Jeringa', 'En caso de no contar con dosificador automático| puede usar jeringas para ello.'],
         retractall(paso(_)),
         retractall(capa(_)),
         assertz(paso('Registrar Elemento'))
