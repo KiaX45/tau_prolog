@@ -375,7 +375,7 @@ regla(Respuesta):-
 :- dynamic(agua_clara/1).
 regla(Respuesta):-
     (paso('Registrar agua_clara') ->
-        !,Respuesta = ['PREGUNTA', '¿El agua es mas clara?', 'si', 'no', 'EXPLICAR', 'Agua más transparente, con turbiedad y color muy bajos.'],
+        !,Respuesta = ['PREGUNTA', '¿El agua es mas clara?', 'si', 'no', 'EXPLICAR', 'Agua más transparente| con turbiedad y color muy bajos.'],
         retractall(paso(_)),
         assertz(paso('Comprobar agua_clara')),
         assertz(agua_clara(Respuesta))
