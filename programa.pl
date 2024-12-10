@@ -184,7 +184,7 @@ regla(Respuesta):-
 %R18
 regla(Respuesta):-
     (paso('Comprobar Dosificacion'), dosificacion('Dosificacion indirecta') ->
-        !,Respuesta = ['RESPUESTA', 'Dosificar en círculos de caucho', 'Ubicar un círculo en cada jarra'],
+        !,Respuesta = ['RESPUESTA', ' Dosificar en círculos de caucho y ubicar un círculo en cada jarra.'],
         retractall(paso(_)),
         retractall(dosificacion(_))
     ).
@@ -234,7 +234,7 @@ regla(Respuesta):-
 %R24
 regla(Respuesta):-
     (paso('Comprobar Aspecto'), aspecto('Dosis a probar') ->
-        !,Respuesta = ['RESPUESTA', 'Desde 20 hata 130 mg/L'],
+        !,Respuesta = ['RESPUESTA', 'Desde 20 hasta 130 mg/L con diferencias de 10 mg/L entre una jarra y otra'],
         retractall(paso(_)),
         retractall(aspecto(_))
     ).
@@ -254,7 +254,7 @@ regla(Respuesta):-
 %R27
 regla(Respuesta):-
     (paso('Comprobar Aspecto'), aspecto('Coagulacion') ->
-        !,Respuesta = ['RESPUESTA', 'Realizar el proceso durante 10 segundos a 300rpm'],
+        !,Respuesta = ['RESPUESTA', 'Tiempo de mezcla rápida 10 segundos a 300 rpm'],
         retractall(paso(_)),
         retractall(aspecto(_))
     ).
@@ -262,7 +262,7 @@ regla(Respuesta):-
 %R28
 regla(Respuesta):-
     (paso('Comprobar Aspecto'), aspecto('Floculacion') ->
-        !,Respuesta = ['RESPUESTA', 'Realizar el proceso durante 10 minutos a 40rpm'],
+        !,Respuesta = ['RESPUESTA', 'Tiempo de mezcla lenta 10 Minutos a 40 rpm'],
         retractall(paso(_)),
         retractall(aspecto(_)),
         assertz(paso('Preguntar Formacion_de_floc'))
@@ -356,7 +356,7 @@ regla(Respuesta):-
 %R37
 regla(Respuesta):-
     (paso('Comprobar aumento_turbiedad'), aumento_turbiedad('Ninguna') ->
-        !,Respuesta = ['RESPUESTA', 'Realizar analisis de cargas', 'Repita prueba de jarras incluyendo la dosis encontrada'],
+        !,Respuesta = ['RESPUESTA', 'Realizar analisis de cargas', 'Repita prueba de jarras incluyendo la dosis encontrada en análisis de cargas'],
         retractall(paso(_)),
         retractall(aumento_turbiedad(_))
     ).
@@ -364,7 +364,7 @@ regla(Respuesta):-
 %R38
 regla(Respuesta):-
     (paso('Comprobar Aspecto'), aspecto('Sedimentacion') ->
-        !,Respuesta = ['RESPUESTA', '10 minutos a 0 rpm'],
+        !,Respuesta = ['RESPUESTA', 'Tiempo de espera 10 minutos a 0 rpm'],
         retractall(paso(_)),
         retractall(aspecto(_)),
         assertz(paso('Preguntar agua_clara'))
@@ -408,7 +408,7 @@ regla(Respuesta):-
 %R42
 regla(Respuesta):-
     (paso('Comprobar Cantidad_de_jarras_optimas'), cantidad_de_jarras_optimas('solo 1') ->
-        !,Respuesta = ['RESPUESTA', 'Cantidad de coagulante definitiva'],
+        !,Respuesta = ['RESPUESTA', 'Dosis de coagulante definitiva'],
         retractall(paso(_)),
         retractall(cantidad_de_jarras_optimas(_))
     ).
@@ -416,7 +416,7 @@ regla(Respuesta):-
 %R43
 regla(Respuesta):-
     (paso('Comprobar Cantidad_de_jarras_optimas'), cantidad_de_jarras_optimas('mas de 1') ->
-        !,Respuesta = ['RESPUESTA', 'Descarte el resto de las Jaras', 'Esperar a Sedimentacion'],
+        !,Respuesta = ['RESPUESTA', 'Descarte el resto de jarras y elija la dosis óptima de coagulante en la jarra con menor color y turbiedad'],
         retractall(paso(_)),
         retractall(cantidad_de_jarras_optimas(_))
     ).
@@ -614,7 +614,7 @@ regla(Respuesta):-
 %R66
 regla(Respuesta):-
     (paso('Comprobar Electricidad'), electricidad('Si') ->
-        !,Respuesta = ['RESPUESTA', 'Ajuste el variador de frecuencia'],
+        !,Respuesta = ['RESPUESTA', 'Ajuste el variador de frecuencia según la dosis a aplicar'],
         retractall(paso(_)),
         retractall(electricidad(_)),
         assertz(paso('Preguntar Dosis'))
