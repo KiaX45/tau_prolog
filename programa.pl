@@ -8,10 +8,10 @@ regla(Respuesta):-
         fail
     ;
         % Si no hay pasos, asignamos la lista de pasos a Respuesta
-        !,ListaPasos = ['PREGUNTA', 'Seleccione el procedimiento deseado', 'Preparacion', 'Preparación: Referente a las pruebas previas que deben realizarse según el clima o temporada para determinar la dosis óptima de coagulante necesaria en la planta Centenario.',
-        'Pruebas Previas', 'Pruebas Previas: Contiene información acerca de los tipos de pruebas que se manejan en la planta Centenario para determinar la dosis necesaria de coagulante.',
-        'Dosificacion en la planta', 'Dosificación en planta: Consiste en los procesos disponibles para realizar la dosificación de coagulante al agua que está siendo tratada en la planta Centenario| dependiendo de si se cuenta con electricidad o no en el momento.',
-        'Analisis posteriores', 'Análisis posteriores: Referente a las pruebas que se pueden realizar para verificar que la dosis de coagulante aplicada al agua a tratar sea adecuada.'],
+        !,ListaPasos = ['PREGUNTA', 'Seleccione el procedimiento deseado', 'Preparacion', 'Referente a las pruebas previas que deben realizarse según el clima o temporada para determinar la dosis óptima de coagulante necesaria en la planta Centenario.',
+        'Pruebas Previas', 'Contiene información acerca de los tipos de pruebas que se manejan en la planta Centenario para determinar la dosis necesaria de coagulante.',
+        'Dosificacion en la planta', 'Consiste en los procesos disponibles para realizar la dosificación de coagulante al agua que está siendo tratada en la planta Centenario| dependiendo de si se cuenta con electricidad o no en el momento.',
+        'Analisis posteriores', 'Referente a las pruebas que se pueden realizar para verificar que la dosis de coagulante aplicada al agua a tratar sea adecuada.'],
         Respuesta = ListaPasos,
         %borramos la lista de pasos
         retractall(paso(_)),
