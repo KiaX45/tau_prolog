@@ -113,7 +113,7 @@ regla(Respuesta):-
 %R10
 regla(Respuesta):-
     (paso('Pruebas Previas') ->
-        !,Respuesta = ['PREGUNTA', 'Seleccione el procedimiento deseado','Prueba de jarras', 'Ensayo de laboratorio que simula coagulación| floculación y sedimentación| para determinar dosis de coagulante.', 'Analisis de cargas', 'Ensayo de laboratorio que permite determinar dosis de coagulante a partir de la neutralización de cargas eléctricas del agua.'],
+        !,Respuesta = ['PREGUNTA', 'Seleccione el tipo de prueba','Prueba de jarras', 'Ensayo de laboratorio que simula coagulación| floculación y sedimentación| para determinar dosis de coagulante.', 'Analisis de cargas', 'Ensayo de laboratorio que permite determinar dosis de coagulante a partir de la neutralización de cargas eléctricas del agua.'],
         retractall(paso(_)),
         assertz(paso('RegistrarPrueba'))
     ).
@@ -130,7 +130,7 @@ regla(Respuesta):-
 %R12
 regla(Respuesta):-
     (paso('Comprobar Prueba'), prueba('Prueba de jarras') ->
-        !,Respuesta = ['PREGUNTA', 'Seleccione el procedimiento deseado', 'Dosis de coagulante', 'Referente a las dosis de coagulante seleccionadas para colocar en cada una de las jarras de la prueba.', 'Operacion de la maquina', 'Referente a los procesos de coagulación| floculación y sedimentación que son simulados en la prueba de jarras.'],
+        !,Respuesta = ['PREGUNTA', 'Seleccione la etapa de la prueba', 'Dosis de coagulante', 'Referente a las dosis de coagulante seleccionadas para colocar en cada una de las jarras de la prueba.', 'Operacion de la maquina', 'Referente a los procesos de coagulación| floculación y sedimentación que son simulados en la prueba de jarras.'],
         retractall(paso(_)),
         retractall(prueba(_)),
         assertz(paso('RegistrarFase'))
@@ -148,7 +148,7 @@ regla(Respuesta):-
 %R14
 regla(Respuesta):-
     (paso('Comprobar Fase'), fase('Dosis de coagulante') ->
-        !,Respuesta = ['PREGUNTA',  'Seleccione el procedimiento deseado','Medio de dosificacion', 'De qué forma se dosifica el coagulante en las jarras', 'Tipo de dosificador', 'Debe definirse el instrumento con el cual se dosifica las cantidades de coagulante correspondientes.', 'Dosis a probar', 'Rango de dosis a probar en las jarras.'],
+        !,Respuesta = ['PREGUNTA',  'Seleccione el aspecto de dosificación','Medio de dosificacion', 'De qué forma se dosifica el coagulante en las jarras', 'Tipo de dosificador', 'Debe definirse el instrumento con el cual se dosifica las cantidades de coagulante correspondientes.', 'Dosis a probar', 'Rango de dosis a probar en las jarras.'],
         retractall(paso(_)),
         retractall(fase(_)),
         assertz(paso('Registrar Aspecto'))
