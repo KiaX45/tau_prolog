@@ -271,7 +271,7 @@ regla(Respuesta):-
 %R28.1
 regla(Respuesta):-
     (paso('Preguntar Formacion_de_floc') ->
-        !,Respuesta = ['PREGUNTA', '¿Observa formacion de floc?', 'si', 'no', 'EXPLICAR',  'La unión de partículas microscópicas debido a la coagulación, permite que estas se vuelvan visibles al estar juntas, eso se conoce como floc.'],
+        !,Respuesta = ['PREGUNTA', '¿Observa formacion de floc?', 'si', 'no', 'EXPLICAR',  'La unión de partículas microscópicas debido a la coagulación| permite que estas se vuelvan visibles al estar juntas| eso se conoce como floc.'],
         retractall(paso(_)),
         assertz(paso('Registrar Formacion_de_floc'))
     ).
@@ -322,7 +322,7 @@ regla(Respuesta):-
 %R33
 regla(Respuesta):-
     (paso('Comprobar Formacion_de_floc'), formacion_de_floc('no') ->
-        !,Respuesta = ['PREGUNTA', '¿Exite un aumento en la turbiedad?', 'Primeras Jarras', 'Ultimas Jarras', 'Ninguna', 'EXPLICAR', ' Medida de la cantidad de particulas que impiden el paso de luz a través del agua, haciendo que a mayor turbiedad, el agua se vea más sucia.'],
+        !,Respuesta = ['PREGUNTA', '¿Exite un aumento en la turbiedad?', 'Primeras Jarras', 'Ultimas Jarras', 'Ninguna', 'EXPLICAR', ' Medida de la cantidad de particulas que impiden el paso de luz a través del agua| haciendo que a mayor turbiedad| el agua se vea más sucia.'],
         retractall(paso(_)),
         retractall(formacion_de_floc(_)),
         assertz(paso('Registrar aumento_turbiedad'))
