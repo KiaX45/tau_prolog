@@ -644,7 +644,7 @@ regla(Respuesta):-
 %R70
 regla(Respuesta):-
     (paso('Comprobar Dosis'), dosis('no') ->
-        !,Respuesta = ['PREGUNTA', '¿Conoce la dosis actual de coagulante que se está dosificando?', 'si', 'no'],
+        !,Respuesta = ['PREGUNTA', '¿Conoce la dosis actual de coagulante que se está dosificando?', 'si', 'no', 'EXPLICAR', 'Aforo: Cuando no se conoce la dosis actual en planta, es recomendable realizar una medición de cuánto coagulante está cayendo al agua por unidad de tiempo, esto es conocido también como un aforo.'],
         retractall(paso(_)),
         retractall(dosis(_)),
         assertz(paso('Registrar DosisActual'))
