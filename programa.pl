@@ -367,19 +367,26 @@ regla(Respuesta):-
         !,Respuesta = ['RESPUESTA', '10 minutos a 0 rpm'],
         retractall(paso(_)),
         retractall(aspecto(_)),
-        assertz(paso('Registrar agua_clara'))
+        assertz(paso('Preguntar agua_clara'))
 
     ).
 
 %R39
+regla(Respuesta):-
+    (paso('Preguntar agua_clara') ->
+        !,Respuesta = ['PREGUNTA', '¿El agua es mas clara?', 'si', 'no', 'EXPLICAR', 'Agua más transparente, con turbiedad y color muy bajos.'],
+        retractall(paso(_)),
+        assertz(paso('Registrar agua_clara'))
+    ).
+
+%R39.1
 :- dynamic(agua_clara/1).
 regla(Respuesta):-
     (paso('Registrar agua_clara') ->
-        !,Respuesta = ['PREGUNTA', '¿El agua es mas clara?', 'si', 'no', 'EXPLICAR', 'Agua más transparente, con turbiedad y color muy bajos.'],
-        retractall(paso(_)),
+        !,retractall(paso(_)),
         assertz(paso('Comprobar agua_clara')),
         assertz(agua_clara(Respuesta))
-    ).
+    ).    
 
 %R40
 regla(Respuesta):-
