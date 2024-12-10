@@ -184,7 +184,7 @@ regla(Respuesta):-
 %R18
 regla(Respuesta):-
     (paso('Comprobar Dosificacion'), dosificacion('Dosificacion indirecta') ->
-        !,Respuesta = ['RESPUESTA', 'Dosificar en círculos de caucho'],
+        !,Respuesta = ['RESPUESTA', 'Dosificar en círculos de caucho', 'Ubicar un círculo en cada jarra'],
         retractall(paso(_)),
         retractall(dosificacion(_))
     ).
