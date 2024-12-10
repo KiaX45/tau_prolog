@@ -77,8 +77,7 @@ regla(Respuesta):-
 %R7
 regla(Respuesta):-
     (paso('Analizar Fuentes'), fuente('Abastecimiento regular') ->
-        !,Respuesta = ['PREGUNTA', 'selccione la opcion correspondiente','La turbiedad es menor a 10 y el color aparente es menor a 100', 'La turbiedad es mayor igual a 10 y el color aparente es mayor igual a 100', 'EXPLICAR', 'La turbiedad es la medida de la cantidad de particulas que impiden el paso de luz a través del agua, haciendo que a mayor turbiedad, el agua se vea más sucia.
-                       El color aparente es el resultado de las sustancias suspendidas y disueltas en el agua, a mayor grado, es más visible.'],
+        !,Respuesta = ['PREGUNTA', 'selccione la opcion correspondiente','La turbiedad es menor a 10 y el color aparente es menor a 100', 'La turbiedad es mayor igual a 10 y el color aparente es mayor igual a 100', 'EXPLICAR', 'La turbiedad es la medida de la cantidad de particulas que impiden el paso de luz a través del agua, haciendo que a mayor turbiedad, el agua se vea más sucia. El color aparente es el resultado de las sustancias suspendidas y disueltas en el agua, a mayor grado, es más visible.'],
         retractall(paso(_)),
         retractall(fuente(_)),
         assertz(paso('Registrar Estado'))
