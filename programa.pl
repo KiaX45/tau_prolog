@@ -256,8 +256,7 @@ regla(Respuesta):-
     (paso('Comprobar Aspecto'), aspecto('Coagulacion') ->
         !,Respuesta = ['RESPUESTA', 'Realizar el proceso durante 10 segundos a 300rpm'],
         retractall(paso(_)),
-        retractall(aspecto(_)),
-        assertz(paso('Registrar Aspecto'))
+        retractall(aspecto(_))
     ).
 
 %R28
